@@ -45,7 +45,46 @@ with recursive paths as (
     on r.source = p.destination
 )
 
+select * from paths;
+
+
+-- -----------------------------------------------------
+
+
+
+
+with recursive paths as (
+	-- starting point 
+    select source, destination, concat(source, "->", destination) as path
+    from sys.routes 
+    where source = 'A'
+    
+    union all 
+    
+    -- recursive case 
+    select 
+    r.source,
+    r.destination, 
+    concat(p.path, "->", r.destination)
+    from sys.routes r
+    join paths p
+    on r.source = p.destination
+)
+
 select * from paths
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

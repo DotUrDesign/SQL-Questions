@@ -52,8 +52,30 @@ with recursive emp_hierarchy as (
     
 )
 
-select distinct * from emp_hierarchy
+select distinct * from emp_hierarchy;
 
+-- --------------------------------------------------------------
+
+with recursive emp_hierarchy as (
+	-- starting point 
+	select emp_id, name, manager_id, 1 as level
+    from sys.employees
+    where manager_id is null 
+    
+    union all 
+    
+    -- recursive case 
+    select 
+    e.emp_id,
+    e.name,
+    e.manager_id,
+    (emp.level + 1) as level
+    from sys.employees e
+    join emp_hierarchy emp
+    on e.manager_id = emp.emp_id
+)
+
+select distinct * from emp_hierarchy order by level
 
 
 

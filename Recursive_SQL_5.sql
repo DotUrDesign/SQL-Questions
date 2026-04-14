@@ -43,7 +43,49 @@ with recursive dates_expansion as (
 select 
 user_id, dt
 from dates_expansion
-order by user_id
+order by user_id;
+
+-- --------------------------------------------------------------
+
+
+with recursive date_expansion as (
+	-- starting point 
+    select user_id, start_date as dt, end_date
+    from sys.subscriptions 
+    
+    union all 
+    
+    -- recursive case 
+    select 
+    user_id, 
+    dt + interval 1 day,
+    end_date
+    from date_expansion
+	where dt < end_date
+)
+
+select * from date_expansion order by user_id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
